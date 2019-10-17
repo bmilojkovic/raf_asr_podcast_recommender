@@ -25,15 +25,14 @@ with one provided by the tested program. The tester has two modes:
   [minutes:ss:hh]word[minutes:ss:hh]
   while the tested file should contain a list of n words in separate lines.
   
-  Example1:
-  (input)
+  Example1 (input):
+
     ref.txt
     test4.txt
     COMPLETE
     
     
-  Example2:
-  (input)
+  Example2 (input):
     ref.txt
     words.txt
     FIND_WORDS
