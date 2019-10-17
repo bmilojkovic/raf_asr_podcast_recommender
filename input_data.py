@@ -3,30 +3,36 @@ import scipy.io.wavfile
 import matplotlib.pyplot as plt
 from scipy.fftpack import dct
 
+from python_speech_features import mfcc
+from python_speech_features import logfbank
+import scipy.io.wavfile as wav
+import matplotlib.pyplot as plt
+
+
 # Parameters
 pre_emphasis = 0.97
 frame_size = 0.025
 frame_stride = 0.01
-NFFT = 512
-num_ceps = 12 # Hyper-parameter for CNN
+NFFT = 1200
+num_ceps = 13 # Hyper-parameter for CNN
 cep_lifter = 22
 nfilt = 40
 
-def prep_input():
+
+def prep_input(wave, nfft=NFFT):
     
     # Raw signal
-    sample_rate, signal = scipy.io.wavfile.read('0_jackson_0.wav')  # File assumed to be in the same directory
+    sample_rate, signal = wav.read(wave)  # File assumed to be in the same directory
 
 
     # Emphasized signal (pre-filtering)
     emphasized_signal = numpy.append(signal[0], signal[1:] - pre_emphasis * signal[:-1])
 
-
     # Splitting singla into frames
     frame_length, frame_step = frame_size * sample_rate, frame_stride * sample_rate  # Convert from seconds to samples
     signal_length = len(emphasized_signal)
     frame_length = int(round(frame_length))
-    frame_step = int(round(frame_step))
+    frame_step = i nt(round(frame_step))
     num_frames = int(numpy.ceil(float(numpy.abs(signal_length - frame_length)) / frame_step))  # Make sure that we have at least 1 frame
 
     pad_signal_length = num_frames * frame_step + frame_length
@@ -105,3 +111,4 @@ def delta(feat, N):
     for t in range(NUMFRAMES):
         delta_feat[t] = numpy.dot(numpy.arange(-N, N+1), padded[t : t+2*N+1]) / denominator   # [t : t+2*N+1] == [(N+t)-N : (N+t)+N+1]
     return delta_feat
+
