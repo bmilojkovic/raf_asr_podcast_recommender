@@ -1,0 +1,40 @@
+
+Has a lot of data
+https://www.kaggle.com/mozillaorg/common-voice
+
+
+
+The site claims this is an open database of 
+voice data. Seems to be fine. nearly everything is labeled. 
+Note: the file is .tar.gz so one needs to use 7zip
+https://voice.mozilla.org/en/datasets
+
+
+(again, file is .tar.gz)
+A good file i think, will add it to the collection
+https://www.openslr.org/7/
+
+Another good database
+http://www.speech.cs.cmu.edu/databases/an4/
+
+
+
+A set of numbers, but it is not labeled per se
+the label is in the name itself
+https://github.com/Jakobovski/free-spoken-digit-dataset
+
+
+Another repository found on SLR
+http://www.openslr.org/12/
+
+
+generally, one should look to slr itself
+http://www.openslr.org/resources.php
+
+
+
+google's one word dataset
+https://ai.googleblog.com/2017/08/launching-speech-commands-dataset.html
+
+great dataset here
+https://github.com/philipperemy/timit/blob/master/README.md
