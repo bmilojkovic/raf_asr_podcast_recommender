@@ -4,7 +4,7 @@
 #ss == seconds
 #ms == hundreds of a second
 
-#program mode == WHOLE (anayze whole transcript) or PARTIAL (find all occurences for 10 words) 
+#program mode == COMPLETE (anayze whole transcript) or FIND_WORDS (find all occurences for 10 words) 
 
 
 def parse_word(word):
