@@ -4,7 +4,7 @@ The following program acts as a tester, compating a referential timestamped tran
 with one provided by the tested program. The tester has two modes:
   COMPLETE: the tester compares two textual files, giving as an output
   the following data:
-      number of total words in referential file 
+      number of total words in referential file \n
       number of words in referential file untested
       number of correct words with correct timestamp
       number of incorrect words with correct timestamp
