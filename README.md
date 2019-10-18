@@ -44,4 +44,6 @@ with one provided by the tested program. The tester has two modes:
     FIND_WORDS
     
     
+File test_files.zip contains audio and transcribed data, with the transcipt having each word's beginning and ending correctly    timestamped in realtion to the audio.
+    
   
