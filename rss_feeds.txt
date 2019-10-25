@@ -1,1 +1,2 @@
-https://feeds.megaphone.fm/stuffyoushouldknow
+url: https://feeds.megaphone.fm/stuffyoushouldknow, tag: enclosure, attribute: url
+url: https://rss.art19.com/the-bill-simmons-podcast, tag: enclosure, attribute: url
