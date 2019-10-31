@@ -16,7 +16,7 @@ with one provided by the tested program. The tester has two modes:
   in given order. 
   The data in both the referential and tested files should be in the following format:
   
-    [minutes:ss:hh]word[minutes:ss:hh] (hh == hundredth of a second)
+    [minutes:ss:ttt]word[minutes:ss:ttt] (hh == thousandth of a second)
   
   FIND_WORDS: the tester finds the position of the words from the tested file in the referential
   file, giving as the output the following data:
