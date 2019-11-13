@@ -83,6 +83,20 @@ class DBN(torch.nn.Module):
             last_weights = np.random.rand((curr_rbm.num_hidden, self.num_output)) * 0.1
             self.weights.append(last_weights)
             
+    def propagate_forward(self, input_vector):
+        
+        first = np.asarray(input_vector).reshape((len(input_vector), 1))
+        
+        for i in range(self.num_hidden_layers):
+            if i == 0:
+                x = self.RBMS[i].propup(first)
+            else:
+                x = self.RBMS[i].propup(x)
+            
+    def _sigmoid(self, x):
+        return 1/(1 + np.exp(-x))
+        
+            
     def backpropagation(self, training_set, training_labels, num_epochs):
         '''
         The training set consists of an array like object of vectors
@@ -106,8 +120,31 @@ class DBN(torch.nn.Module):
                 #and feed each separate part into the network 
                 
                 for i in range(0, curr_label_len):
-                    curr_training_elem = training_set[0:curr_label_len]
+                    curr_training_elem = training_set[i*curr_label_len: (i+1)*curr_label_len]
                     
+                    mean_result = np.zeros((curr_training_elem[0], 1))
+                    
+                    for elem in curr_training_elem:
+                        mean_result += self.propagate_forward(elem)
+                    mean_result /= curr_label_len #this is the mean probability of a phone
+                    
+                    #the mean_result goes to the final layer, where it is encoded 
+                    #into a phone code. It is treated as the imput to the last layer
+                    
+                    last_layer_activation = np.dot(mean_result, self.weights[self.num_hidden_layers].transpose()).transpose()
+                    last_layer_activation = self._sigmoid(last_layer_activation) > 0.5
+                    
+                    #last_layer_activation is the end encoded result for a phone
+                    
+                    '''calculate error'''
+                    error = np.dot((training_labels[k] - last_layer_activation) * (training_labels[k] - last_layer_activation).transpose())
+                    
+                    
+                    '''backpropagate error'''
+                    
+                    
+                    
+                                        
                     
                     '''
                     Bring back the previous code here
