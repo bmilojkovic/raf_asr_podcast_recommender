@@ -60,14 +60,14 @@ def train_GMMHMM(dataset):
     return GMMHMM_Models
 
 def main():
-    trainDir = '/home/milos/raf_asr_podcast_recommender/train_audio/'
+    trainDir = 'C:/Users/Bogdan/PycharmProjects/raf_asr_podcast_recommender/train_audio/'
     trainDataSet = buildDataSet(trainDir)
     print("Finish prepare the training data")
 
     hmmModels = train_GMMHMM(trainDataSet)
     print("Finish training of the GMM_HMM models for digits 0-9")
 
-    testDir = '/home/milos/raf_asr_podcast_recommender/test_audio/'
+    testDir = 'C:/Users/Bogdan/PycharmProjects/raf_asr_podcast_recommender/test_audio/'
     testDataSet = buildDataSet(testDir)
 
     score_cnt = 0
