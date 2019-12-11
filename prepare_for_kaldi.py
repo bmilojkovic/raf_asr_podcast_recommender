@@ -147,11 +147,30 @@ def convert_all_to_mono():
         sound = sound.set_channels(1)
         sound.export(new_path + filename, format="wav")
 
+def count_lines():
+    path="words.txt"
+    c = 0
+    lex = open("count_words.txt", "w+")
+    with open("words.txt") as f:
+        for line in f:
+            c += 1
+            lex.write(line + " " + str(c) + "\n")
+    lex.close()
+
+def rewrite_words():
+    lex = open("grammar2.txt", "w+")
+    with open("grammar1.txt") as f:
+        for line in f:
+            lex.write(line.split()[0] + "\n")
+    lex.close()
+
 # convert_all_to_mono()
 # convert_all_to_8khz()
 # rename_all_files()
-create_wav_scp_file()
+# create_wav_scp_file()
 # create_text_file()
 # create_segments_file()
 # create_utt2spk_file()
 # filter_lexicon_words()
+# count_lines()
+rewrite_words()
