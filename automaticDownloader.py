@@ -47,7 +47,7 @@ def get_video_links():
            
     for rssFeed in archived_feeds:
         r = requests.get(rssFeed.url) 
-        soup = BeautifulSoup(r.content,'html5lib') 
+        soup = BeautifulSoup(r.content,'html.parser') 
         links = soup.findAll(rssFeed.tag)  
     
         count = 0
