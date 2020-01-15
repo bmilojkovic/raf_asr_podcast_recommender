@@ -8,6 +8,11 @@ import numpy as np
 
 from difflib import get_close_matches
 
+import nltk
+from nltk.corpus import words
+
+from keyword_extraction import extract
+
 
 def load_graph(frozen_graph_path):
     """Loads frozen graph.
@@ -91,7 +96,7 @@ def data_generator(data_path):
     """
     for file_name in os.listdir(data_path):
         np_data = load_mfcc_wav(os.path.join(data_path, file_name))
-        yield np.expand_dims(np_data, axis=0), np.expand_dims(len(np_data), axis=0)
+        yield np.expand_dims(np_data, axis=0), np.expand_dims(len(np_data), axis=0), file_name
 
 
 def pattern_match(output_sentence, vocabulary):
@@ -109,14 +114,16 @@ def pattern_match(output_sentence, vocabulary):
         decoded: Matrix of decoded sequences.
     """
     cleaned_decoded = ' '.join(
-        [next(iter(get_close_matches(w, vocabulary, n=1, cutoff=0.6)), '') for w in output_sentence.split(' ')])
+        [next(iter(get_close_matches(w, vocabulary, n=1, cutoff=0.8)), '') for w in output_sentence.split(' ')])
     return cleaned_decoded
 
 def inference(**options):
-    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\' '
+    alphabet = 'abcdefghijklmnopqrstuvwxyz\' '
     
     model_path = '/home/milos/Desktop/wingman-20200110T134708Z-001/wingman/model_1'
     data_path = '/home/milos/Desktop/wingman-20200110T134708Z-001/wingman/data'
+
+    vocabulary = words.words()
     
     gpu_options = tf.GPUOptions(allow_growth=True)
     tf_config = tf.ConfigProto(allow_soft_placement=True, gpu_options=gpu_options)
@@ -132,14 +139,61 @@ def inference(**options):
             precision_mode='FP16')
         outputs = tf.import_graph_def(trt_graph, return_elements=['decoded:0'])
 
-        for feats, seq_len in data_generator(data_path):
+        dump = open("dump.txt", "a")
+        for feats, seq_len, file_name in data_generator(data_path):
             feed_dict = {'import/input_placeholder:0': feats, 'import/seq_len_placeholder:0': seq_len}
             model_outputs = sess.run(outputs, feed_dict=feed_dict)[0][0]
             output_sentence = "".join([alphabet[i] for i in model_outputs])
-            print(f'Raw output: {output_sentence}')
-            print(f'Cleaned output: {pattern_match(output_sentence, vocabulary=["FLY", "GO", "UP", "LEFT", "RIGHT"])}')
+            cleaned_output = pattern_match(output_sentence, vocabulary=vocabulary)
 
+            #print(f'Raw output: {output_sentence}')
+            cleaned_output = pattern_match(output_sentence, vocabulary=vocabulary)
+            #print(f'Cleaned output: {cleaned_output}')
+            
+            dump.write(file_name)
+            dump.write("\n")
+            dump.write(cleaned_output)
+            dump.write("\n")
+
+    dump.close()
+
+
+def get_keywords():
+    data = "/home/milos/Desktop/wingman-20200110T134708Z-001/wingman/transcripted"
+    file_output = open("database.txt", "a")    
+    
+    for file_name in os.listdir(data):
+        file = open(os.path.join(data, file_name), "r")
+        text = file.read()
+        keywords = extract(text)
+        file_output.write(file_name)
+        file_output.write("\n")
+        file_output.write(str([str(keyword[0]) for keyword in keywords]))
+        file_output.write("\n")
+
+    file_output.close
 
 if __name__ == "__main__":
-    inference()
+    #nltk.download('words')
+    #inference()
+    #get_keywords()
+
+    database = open("database.txt", "r")
+    podcasts = []
+    
+    for line in database:
+        if line[0] != "[":
+            podcasts.append({"name": line[:len(line) - 5]})
+        else:
+            podcasts[-1]["keywords"] = line
+
+
+    while True:
+        keyword = input("Enter keyword: ")
+
+        for podcast in podcasts:
+            if keyword in podcast["keywords"]:
+                print(podcast["name"])
+
+
 
